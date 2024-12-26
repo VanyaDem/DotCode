@@ -2,14 +2,16 @@ package com.testtask.dotcode.service;
 
 import com.testtask.dotcode.domain.entity.User;
 import com.testtask.dotcode.domain.repository.UserRepository;
+import com.testtask.dotcode.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService{
     public User findById(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(getException(id));
     }
 
     @Override
@@ -30,8 +32,21 @@ public class UserServiceImpl implements UserService{
         return repository.save(user);
     }
 
+    public User update(Long id, User user) {
+        var findedUser = findById(id);
+        findedUser.setFirstName(user.getFirstName());
+        findedUser.setLastName(user.getLastName());
+        findedUser.setEmail(user.getEmail());
+        return repository.save(findedUser);
+    }
+
     @Override
-    public void delete(User user) {
+    public void delete(Long id) {
+        var user = findById(id);
         repository.delete(user);
+    }
+
+    private Supplier<UserNotFoundException> getException(Long id) {
+        return () -> new UserNotFoundException(String.format("User with id: %s does not exist.", id));
     }
 }
