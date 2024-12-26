@@ -9,13 +9,13 @@ public class UserDto {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "The first name must not be empty.")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "The last name must not be empty.")
     private String lastName;
 
-    @Email
+    @Email(message = "Email should be valid")
     @NotBlank
     private String email;
 }
