@@ -4,9 +4,10 @@ import com.testtask.dotcode.domain.entity.User;
 import com.testtask.dotcode.domain.repository.UserRepository;
 import com.testtask.dotcode.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 @Service
@@ -16,8 +17,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public List<User> findAll() {
-        return repository.findAll();
+    public Page<User> findAll(PageRequest pageRequest) {
+        return repository.findAll(pageRequest);
     }
 
     @Override

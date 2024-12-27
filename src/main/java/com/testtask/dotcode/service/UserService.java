@@ -1,12 +1,12 @@
 package com.testtask.dotcode.service;
 
 import com.testtask.dotcode.domain.entity.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface UserService {
 
-    List<User> findAll();
+    Page<User> findAll(PageRequest request);
 
     User findById(Long id);
 
@@ -15,6 +15,5 @@ public interface UserService {
     User update(Long id, User user);
 
     void delete(Long id);
-
 
 }

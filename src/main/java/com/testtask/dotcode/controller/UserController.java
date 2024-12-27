@@ -3,9 +3,9 @@ package com.testtask.dotcode.controller;
 import com.testtask.dotcode.domain.entity.User;
 import com.testtask.dotcode.dto.UserDto;
 import com.testtask.dotcode.service.UserService;
-import com.testtask.dotcode.utils.DtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.testtask.dotcode.utils.DtoMapper.mapToUser;
-import static com.testtask.dotcode.utils.DtoMapper.mapToUserDto;
+import static com.testtask.dotcode.utils.DtoMapper.*;
 
 @RestController
 @CrossOrigin("*")
@@ -26,10 +25,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> findAll() {
-        var users = userService.findAll();
-        var userDtoList = DtoMapper.toUserDtoList(users);
-        return ResponseEntity.ok(userDtoList);
+    public ResponseEntity<List<UserDto>> findAll(@RequestParam int page, @RequestParam int size) {
+        var pageOfUsers = userService.findAll(PageRequest.of(page, size));
+        var userDtoList = mapToUserDtoList(pageOfUsers.getContent());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("X-Total-Pages", Integer.toString(pageOfUsers.getTotalPages()))
+                .body(userDtoList);
     }
 
     @GetMapping("/{id}")
