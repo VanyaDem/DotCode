@@ -5,6 +5,7 @@ import com.testtask.dotcode.dto.UserDto;
 import com.testtask.dotcode.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll(@RequestParam int page, @RequestParam int size) {
-        var pageOfUsers = userService.findAll(PageRequest.of(page, size));
-        var userDtoList = mapToUserDtoList(pageOfUsers.getContent());
+        Page<User> pageOfUsers = userService.findAll(PageRequest.of(page, size));
+        List<UserDto> userDtoList = mapToUserDtoList(pageOfUsers.getContent());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("X-Total-Pages", Integer.toString(pageOfUsers.getTotalPages()))
@@ -36,8 +37,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable("id") Long id) {
-        var user = userService.findById(id);
-        var userDto = mapToUserDto(user);
+        User user = userService.findById(id);
+        UserDto userDto = mapToUserDto(user);
         return ResponseEntity.ok(userDto);
     }
 
