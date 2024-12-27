@@ -1,13 +1,13 @@
 package com.testtask.dotcode.utils;
 
-import com.testtask.dotcode.dto.UserDto;
 import com.testtask.dotcode.domain.entity.User;
+import com.testtask.dotcode.dto.UserDto;
 
 import java.util.List;
 
 public class DtoMapper {
 
-    public static User mapToUser(UserDto dto){
+    public static User mapToUser(UserDto dto) {
         User user = new User();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
@@ -16,7 +16,7 @@ public class DtoMapper {
         return user;
     }
 
-    public static UserDto mapToUserDto(User user){
+    public static UserDto mapToUserDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setFirstName(user.getFirstName());
@@ -25,7 +25,7 @@ public class DtoMapper {
         return dto;
     }
 
-    public static List<UserDto> toUserDtoList(List<User> users){
+    public static List<UserDto> mapToUserDtoList(List<User> users) {
         return users
                 .stream()
                 .map(DtoMapper::mapToUserDto)
