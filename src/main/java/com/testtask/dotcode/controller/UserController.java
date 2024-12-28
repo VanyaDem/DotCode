@@ -32,6 +32,7 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("X-Total-Pages", Integer.toString(pageOfUsers.getTotalPages()))
+                .header("Access-Control-Expose-Headers", "X-Total-Pages")
                 .body(userDtoList);
     }
 
