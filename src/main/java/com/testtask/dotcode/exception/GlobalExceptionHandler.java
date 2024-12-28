@@ -24,10 +24,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<AppError> noSuchElementExceptionHandler(UserNotFoundException exception) {
         var error = AppError.of(400, exception.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UserEmailExistException.class)
+    public ResponseEntity<AppError> userEmailExistExceptionHandler(UserEmailExistException exception) {
+        var error = AppError.of(409, exception.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler

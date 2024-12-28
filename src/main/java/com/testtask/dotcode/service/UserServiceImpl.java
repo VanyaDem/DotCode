@@ -2,8 +2,10 @@ package com.testtask.dotcode.service;
 
 import com.testtask.dotcode.domain.entity.User;
 import com.testtask.dotcode.domain.repository.UserRepository;
+import com.testtask.dotcode.exception.UserEmailExistException;
 import com.testtask.dotcode.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(getException(id));
     }
 
+    private Supplier<UserNotFoundException> getException(Long id) {
+        return () -> new UserNotFoundException(String.format("User with id: %s does not exist.", id));
+    }
+
     @Override
     public User save(User user) {
-        return repository.save(user);
+        return saveWithUniqueEmail(user);
     }
 
     public User update(Long id, User user) {
@@ -38,7 +44,7 @@ public class UserServiceImpl implements UserService {
         findedUser.setFirstName(user.getFirstName());
         findedUser.setLastName(user.getLastName());
         findedUser.setEmail(user.getEmail());
-        return repository.save(findedUser);
+        return saveWithUniqueEmail(findedUser);
     }
 
     @Override
@@ -47,7 +53,13 @@ public class UserServiceImpl implements UserService {
         repository.delete(user);
     }
 
-    private Supplier<UserNotFoundException> getException(Long id) {
-        return () -> new UserNotFoundException(String.format("User with id: %s does not exist.", id));
+    private User saveWithUniqueEmail(User user) {
+        try {
+            return repository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserEmailExistException("User with email: " + user.getEmail() + " already exist.", e);
+        }
     }
+
+
 }
