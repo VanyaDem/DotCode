@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return saveWithUniqueEmail(user);
+        return saveIfEmailIsUnique(user);
     }
 
     public User update(Long id, User user) {
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         findedUser.setFirstName(user.getFirstName());
         findedUser.setLastName(user.getLastName());
         findedUser.setEmail(user.getEmail());
-        return saveWithUniqueEmail(findedUser);
+        return saveIfEmailIsUnique(findedUser);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         repository.delete(user);
     }
 
-    private User saveWithUniqueEmail(User user) {
+    private User saveIfEmailIsUnique(User user) {
         try {
             return repository.save(user);
         } catch (DataIntegrityViolationException e) {
