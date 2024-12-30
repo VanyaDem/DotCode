@@ -136,14 +136,13 @@ public class UserControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        List<UserDto> page1 = Arrays.asList(objectMapper.readValue(firstPage, UserDto[].class));
-
         var secondPage = mockMvc.perform(MockMvcRequestBuilders.get("/users?page=1&size=2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
+        List<UserDto> page1 = Arrays.asList(objectMapper.readValue(firstPage, UserDto[].class));
         List<UserDto> page2 = Arrays.asList(objectMapper.readValue(secondPage, UserDto[].class));
 
         assertEquals(2, page1.size());
