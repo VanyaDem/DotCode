@@ -7,7 +7,7 @@ import com.testtask.dotcode.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Supplier;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public Page<User> findAll(PageRequest pageRequest) {
+    public Page<User> findAll(Pageable pageRequest) {
         return repository.findAll(pageRequest);
     }
 

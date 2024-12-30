@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> findAll(@RequestParam int page, @RequestParam int size) {
-        Page<User> pageOfUsers = userService.findAll(PageRequest.of(page, size));
+    public ResponseEntity<List<UserDto>> findAll(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+        Page<User> pageOfUsers = userService.findAll(pageable);
         List<UserDto> userDtoList = mapToUserDtoList(pageOfUsers.getContent());
         return ResponseEntity
                 .status(HttpStatus.OK)

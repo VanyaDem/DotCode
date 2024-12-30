@@ -3,10 +3,11 @@ package com.testtask.dotcode.service;
 import com.testtask.dotcode.domain.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    Page<User> findAll(PageRequest request);
+    Page<User> findAll(Pageable request);
 
     User findById(Long id);
 
