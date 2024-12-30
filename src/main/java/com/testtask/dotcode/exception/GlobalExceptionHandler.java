@@ -20,9 +20,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<AppError> noSuchElementExceptionHandler(UserNotFoundException exception, WebRequest request) {
-        var error = AppError.of(HttpStatus.BAD_REQUEST, exception.getMessage(), request);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<AppError> userNotFoundHandler(UserNotFoundException exception, WebRequest request) {
+        var error = AppError.of(HttpStatus.NOT_FOUND, exception.getMessage(), request);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserEmailExistException.class)
