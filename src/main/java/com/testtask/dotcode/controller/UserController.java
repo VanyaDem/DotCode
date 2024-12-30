@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> findAll(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public ResponseEntity<List<UserDto>> findAll(Pageable pageable) {
         Page<User> pageOfUsers = userService.findAll(pageable);
         List<UserDto> userDtoList = mapToUserDtoList(pageOfUsers.getContent());
         return ResponseEntity
