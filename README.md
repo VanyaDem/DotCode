@@ -20,10 +20,6 @@ The base URL for all API endpoints is:
 - `page` (integer): The page number (default is 0).
 - `size` (integer): The size of the page (default is 10).
 
-**Headers:**
-- `X-Total-Pages`: Total number of pages.
-- `X-Total-Count`: Total number of users.
-
 **Response:**
 ```json
 [
@@ -41,10 +37,11 @@ The base URL for all API endpoints is:
   }
 ]
 ```
+**Headers:**
+- `X-Total-Pages`: Total number of pages.
 
 **Status Codes:**
 - `200 OK`: Request was successful.
-- `400 Bad Request`: Invalid page or size parameters.
 
 ---
 
@@ -101,6 +98,7 @@ The base URL for all API endpoints is:
 **Status Codes:**
 - `201 Created`: User was successfully created.
 - `400 Bad Request`: Validation error in the request body.
+- `409 Conflict`: If user with such email already exist.
 
 ---
 
@@ -136,6 +134,7 @@ The base URL for all API endpoints is:
 - `200 OK`: User was successfully updated.
 - `400 Bad Request`: Validation error in the request body.
 - `404 Not Found`: User with the given ID does not exist.
+- `409 Conflict`: If user with such email already exist.
 
 ---
 
@@ -175,10 +174,10 @@ In case of an error, the API returns a JSON object with the following structure:
 ```json
 {
   "timestamp": "2024-12-30T12:34:56.789",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Validation failed for object. Details: [The first name must not be empty.]",
-  "path": "/users"
+  "status": 404,
+  "error": "Not Found",
+  "message": "User with id: 1 does not exist",
+  "path": "/users/1"
 }
 ```
 
