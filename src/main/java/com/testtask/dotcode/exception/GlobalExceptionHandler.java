@@ -7,31 +7,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<AppError> handleValidationExceptions(MethodArgumentNotValidException exception, WebRequest request) {
-
-        Map<String, String> errors = new HashMap<>();
-        exception
-                .getBindingResult()
-                .getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage())
-                );
-
-        String message = errors
-                .entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ": " + entry.getValue())
-                .reduce((e1, e2) -> e1 + ", " + e2)
-                .orElse("");
-
+        var message = getErrorMessage(exception);
         var error = AppError.of(HttpStatus.BAD_REQUEST, message, request);
-
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -53,4 +37,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    private static String getErrorMessage(MethodArgumentNotValidException exception) {
+        return exception
+                .getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+    }
 }

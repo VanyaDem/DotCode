@@ -11,11 +11,11 @@ public class UserDto {
     private Long id;
 
     @Size(max = 255)
-    @NotBlank(message = "The first name must not be empty.")
+    @NotBlank(message = "The first name must not be empty")
     private String firstName;
 
     @Size(max = 255)
-    @NotBlank(message = "The last name must not be empty.")
+    @NotBlank(message = "The last name must not be empty")
     private String lastName;
 
     @Size(max = 255)
