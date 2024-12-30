@@ -1,4 +1,4 @@
-# DoteCode User API Documentation
+# DotCode User API Documentation
 
 This document provides a detailed description of the User API endpoints, including request bodies, response bodies, status codes, and their purposes.
 
